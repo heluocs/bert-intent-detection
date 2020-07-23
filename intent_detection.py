@@ -129,13 +129,11 @@ model.fit(
   x=data.train_x,
   y=data.train_y,
   validation_split=0.1,
-  batch_size=2,
+  batch_size=16,
   shuffle=True,
   epochs=5,
   callbacks=[tensorboard_callback]
 )
-
-#model.save('SavedModel')
 
 MODEL_DIR = "saved_model"
 version = 1

@@ -24,21 +24,13 @@ class IntentDetection:
         return tf.keras.models.load_model(self.modelDir) 
 
     def predict(self, sentence):
-        print(sentence)
-        #sentences = ["Play our song now","Rate this book as awful"]
-        sentences = []
-        sentences.append(sentence)
-        pred_tokens = map(self.tokenizer.tokenize, sentences)
-        pred_tokens = map(lambda tok:["[CLS]"]+tok+["[SEP]"], pred_tokens)
-
-        pred_token_ids = list(map(self.tokenizer.convert_tokens_to_ids, pred_tokens))
-        pred_token_ids = map(lambda tids: tids+[0]*(self.MAX_SEQ_LEN-len(tids)), pred_token_ids)
-        pred_token_ids = np.array(list(pred_token_ids))
-
+        pred_tokens = self.tokenizer.tokenize(sentence)
+        pred_tokens = ["[CLS]"] + pred_tokens + ["[SEP]"]
+        pred_token_ids = list(self.tokenizer.convert_tokens_to_ids(pred_tokens))
+        pred_token_ids = pred_token_ids + [0]*(self.MAX_SEQ_LEN-len(pred_token_ids))
+        #pred_token_ids = np.array([pred_token_ids,])
+        pred_token_ids = np.array(pred_token_ids)
+        pred_token_ids = np.expand_dims(pred_token_ids, axis=0)
         predictions = self.model.predict(pred_token_ids).argmax(axis=-1)
-
-        for text, label in zip(sentences, predictions):
-            print("text:", text, "\nintent:", self.classes[label])
-            return self.classes[label]
-		 
+        return self.classes[predictions[0]]
 
