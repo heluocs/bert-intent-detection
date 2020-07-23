@@ -19,6 +19,25 @@ tokenizer = FullTokenizer(vocab_file=os.path.join(bert_dir, "vocab.txt"))
 
 model = tf.keras.models.load_model("saved_model/1")
 
+#sentence = "Play our song now"
+sentence = "Rate this book as awful"
+pred_tokens = tokenizer.tokenize(sentence)
+print(pred_tokens)
+pred_tokens = ["[CLS]"] + pred_tokens + ["[SEP]"]
+print(pred_tokens)
+pred_token_ids = list(tokenizer.convert_tokens_to_ids(pred_tokens))
+print(pred_token_ids)
+pred_token_ids = pred_token_ids + [0]*(MAX_SEQ_LEN-len(pred_token_ids))
+print(pred_token_ids)
+#pred_token_ids = np.array(list(pred_token_ids))
+pred_token_ids = np.array([pred_token_ids,])
+print(pred_token_ids)
+predictions = model.predict(pred_token_ids).argmax(axis=-1)
+print(predictions)
+print(classes[predictions[0]])
+
+
+"""
 sentences = [
   "Play our song now",
   "Rate this book as awful"
@@ -31,8 +50,10 @@ pred_token_ids = list(map(tokenizer.convert_tokens_to_ids, pred_tokens))
 pred_token_ids = map(lambda tids: tids+[0]*(MAX_SEQ_LEN-len(tids)), pred_token_ids)
 pred_token_ids = np.array(list(pred_token_ids))
 
+print(pred_token_ids)
 predictions = model.predict(pred_token_ids).argmax(axis=-1)
 
 for text, label in zip(sentences, predictions):
   print("text:", text, "\nintent:", classes[label])
   print()
+"""
