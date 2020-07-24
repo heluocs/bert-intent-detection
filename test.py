@@ -11,7 +11,7 @@ from bert.tokenization.bert_tokenization import FullTokenizer
 MAX_SEQ_LEN = 38
 
 bert_model_name="uncased_L-12_H-768_A-12"
-bert_dir = os.path.join("model/", bert_model_name)
+bert_dir = os.path.join("pre_trained_model/", bert_model_name)
 
 classes = ['PlayMusic', 'AddToPlaylist', 'RateBook', 'SearchScreeningEvent', 'BookRestaurant', 'GetWeather', 'SearchCreativeWork']
 
